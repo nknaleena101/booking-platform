@@ -1,98 +1,101 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# EN2H Booking Platform REST API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A production-ready Backend REST API built using **NestJS**, **TypeScript**, and **PostgreSQL** that allows users to manage services and handles public customer bookings securely with business rules enforcement.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🌐 Live Application
+- **Live Swagger API Documentation:** [https://en2h-booking-platform.onrender.com/api](https://en2h-booking-platform.onrender.com/api)
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🚀 Features Implemented
+- **JWT Authentication:** Secure user registration and login endpoints using password hashing via `bcrypt`.
+- **Service Management (CRUD):** Complete control over services (Create, Read, Update, Delete) strictly protected by an `AuthGuard`.
+- **Booking Management:** Publicly accessible booking creations embedded with robust business logic validation.
+- **Global Exception Filter:** Standardized JSON error response formatting across the entire application.
+- **Data Validation:** Seamless DTO validation using `class-validator` and `class-transformer`.
+- **Bonus Features Implemented:**
+  - Complete **Swagger UI** integration for interactive testing.
+  - **Docker Support** with custom multi-stage `Dockerfile` and `docker-compose.yml`.
+  - **Search, Filter & Pagination** on the bookings endpoint.
+  - Double booking mitigation strategy (preventing duplicate time slots for the same service).
 
-## Project setup
+---
+
+## 🛠️ Tech Stack
+- **Framework:** NestJS (v10+)
+- **Language:** TypeScript
+- **Database:** PostgreSQL
+- **ORM:** TypeORM
+- **Containerization:** Docker
+
+---
+
+## ⚙️ Environment Variables
+Create a `.env` file in the root directory and configure the following parameters (Refer to `.env.example`):
+
+```env
+PORT=3000
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=your_postgres_username
+DB_PASSWORD=your_postgres_password
+DB_NAME=en2h_booking_db
+JWT_SECRET=super_secret_key
+JWT_EXPIRES_IN=1d
+
+Getting Started & Installation Steps
+Prerequisites
+Make sure you have Node.js (v20+) and PostgreSQL installed locally, or Docker running.
+
+1. Local Setup Without Docker
+# Clone the repository
+git clone <your-repository-url>
+cd en2h-booking-platform
+
+# Install dependencies
+npm install
+
+# Create local PostgreSQL Database
+# Run your postgres instance and create a database named 'en2h_booking_db'
+
+# Configure your environment variables
+cp .env.example .env
+
+# Run the application in development mode (Database tables will auto-sync)
+npm run start:dev
+
+Once started, the API will be available at http://localhost:3000 and Swagger UI at http://localhost:3000/api.
+
+
+2. Run via Docker (Recommended)
+With Docker installed, you can spin up both the NestJS server and the PostgreSQL database container seamlessly with a single command:
+docker-compose up --build
+
+
+
+Assumptions Made
+Dynamic DB Synced: Used synchronize: true in development for schema generation as migrations are traditionally handled by infrastructure operators via CI/CD pipelines in production.
+
+Public Bookings: Customers do not require an account or authentication to register a booking slot, fitting real-world service requirements.
+
+Time Slot Constraints: Duplicates are checked based on exact matches of serviceId, bookingDate, and bookingTime.
+
+
+
+Future Improvements
+Refresh Token Lifecycle: To ensure smooth UI session lifetimes without prompt expirations.
+
+Unit & Integration Testing: Expanding code coverage using Jest for critical service blocks.
+
+Dynamic Scheduling: Checking available intervals by operating hours rather than exact hour/minute text matching.
+
+---
+
+## 🚀 Step 2: Final Git Commit & Push
+
+දැන් ඔයාගේ VS Code terminal එකෙන් අලුත් README එක සහ `app.module.ts` එකේ වෙනස්කම් ටික GitHub එකට යවන්න මේ commands ටික පිළිවෙලට run කරන්න[cite: 115]:
 
 ```bash
-$ npm install
-```
-
-## Compile and run the project
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Run tests
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+git add .
+git commit -m "feat: complete global exception handling, query refinement, and add professional documentation"
+git push origin main
