@@ -19,12 +19,15 @@ import { BookingsModule } from './bookings/bookings.module';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
+        // If Render provides a single DATABASE_URL, TypeORM will use it directly
+        url: configService.get<string>('DATABASE_URL'),
+        // Otherwise, it falls back to local config variables
         host: configService.get<string>('DB_HOST'),
         port: configService.get<number>('DB_PORT'),
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
-        autoLoadEntities: true, // This will now pick up entities registered via forFeature()
+        autoLoadEntities: true,
         synchronize: true,
       }),
     }),
@@ -36,7 +39,7 @@ import { BookingsModule } from './bookings/bookings.module';
     BookingsModule,
   ],
 })
-export class AppModule {}
+export class AppModule { }
 
 
 
