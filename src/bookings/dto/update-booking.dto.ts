@@ -1,4 +1,10 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateBookingDto } from './create-booking.dto';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsEnum, IsNotEmpty } from 'class-validator';
+import { BookingStatus } from '../entities/booking.entity';
 
-export class UpdateBookingDto extends PartialType(CreateBookingDto) {}
+export class UpdateBookingDto {
+  @ApiProperty({ enum: BookingStatus, example: BookingStatus.CONFIRMED })
+  @IsEnum(BookingStatus, { message: 'Invalid booking status' })
+  @IsNotEmpty({ message: 'Status is required' })
+  status!: BookingStatus;
+}
