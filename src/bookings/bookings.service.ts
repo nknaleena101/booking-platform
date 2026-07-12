@@ -5,6 +5,7 @@ import { Booking, BookingStatus } from './entities/booking.entity';
 import { Service } from '../services/entities/service.entity';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
+import { BookingQueryDto } from './dto/booking-query.dto';
 
 @Injectable()
 export class BookingsService {
@@ -48,10 +49,44 @@ export class BookingsService {
   }
 
   // 2. Get All Bookings (Admin feature)
-  async findAll(): Promise<Booking[]> {
-    // Changed from ['service'] to object format { service: true } for strict type safety
-    return await this.bookingRepository.find({ relations: { service: true } });
+  async desertAll(queryDto: BookingQueryDto) {
+  const { status, search, page = 1, limit = 10 } = queryDto;
+  
+  // Create a query builder to handle dynamic filters safely
+  const queryBuilder = this.bookingRepository.createQueryBuilder('booking')
+    .leftJoinAndSelect('booking.service', 'service');
+
+  // Filter by Status if provided
+  if (status) {
+    queryBuilder.andWhere('booking.status = :status', { status });
   }
+
+  // Search by Name or Email if provided (Case-insensitive using ILIKE)
+  if (search) {
+    queryBuilder.andWhere(
+      '(booking.customerName ILIKE :search OR booking.customerEmail ILIKE :search)',
+      { search: `%${search}%` }
+    );
+  }
+
+  // Apply Pagination calculation
+  const skip = (page - 1) * limit;
+  queryBuilder.skip(skip).take(limit);
+
+  // Execute query and get results along with total count
+  const [data, total] = await queryBuilder.getManyAndCount();
+
+  return {
+    data,
+    meta: {
+      totalItems: total,
+      itemCount: data.length,
+      itemsPerPage: limit,
+      totalPages: Math.ceil(total / limit),
+      currentPage: page,
+    },
+  };
+}
 
   // 3. Get Booking by ID
   async findOne(id: string): Promise<Booking> {

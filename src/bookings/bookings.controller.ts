@@ -4,11 +4,13 @@ import { CreateBookingDto } from './dto/create-booking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
 import { AuthGuard } from '../auth/auth.guard';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { BookingQueryDto } from './dto/booking-query.dto';
+import { Query} from '@nestjs/common';
 
 @ApiTags('Bookings') // Swagger group
 @Controller('bookings')
 export class BookingsController {
-  constructor(private readonly bookingsService: BookingsService) {}
+  constructor(private readonly bookingsService: BookingsService) { }
 
   @Post()
   @ApiOperation({ summary: 'Create a new customer booking (Public)' })
@@ -20,10 +22,10 @@ export class BookingsController {
 
   @Get()
   @ApiBearerAuth()
-  @UseGuards(AuthGuard) // Protected: Only authenticated users can view all bookings
-  @ApiOperation({ summary: 'Get all bookings (Admin Only)' })
-  findAll() {
-    return this.bookingsService.findAll();
+  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Get all bookings with Pagination, Search, and Filtering (Admin Only)' })
+  findAll(@Query() queryDto: BookingQueryDto) {
+    return this.bookingsService.desertAll(queryDto); // Make sure it points to updated service method
   }
 
   @Get(':id')
