@@ -33,7 +33,7 @@ A production-ready Backend REST API built using **NestJS**, **TypeScript**, and 
 ## ⚙️ Environment Variables
 Create a `.env` file in the root directory and configure the following parameters (Refer to `.env.example`):
 
-```env
+env
 PORT=3000
 DB_HOST=localhost
 DB_PORT=5432
@@ -42,6 +42,8 @@ DB_PASSWORD=your_postgres_password
 DB_NAME=en2h_booking_db
 JWT_SECRET=super_secret_key
 JWT_EXPIRES_IN=1d
+
+---
 
 Getting Started & Installation Steps
 Prerequisites
@@ -88,14 +90,3 @@ Refresh Token Lifecycle: To ensure smooth UI session lifetimes without prompt ex
 Unit & Integration Testing: Expanding code coverage using Jest for critical service blocks.
 
 Dynamic Scheduling: Checking available intervals by operating hours rather than exact hour/minute text matching.
-
----
-
-## 🚀 Step 2: Final Git Commit & Push
-
-දැන් ඔයාගේ VS Code terminal එකෙන් අලුත් README එක සහ `app.module.ts` එකේ වෙනස්කම් ටික GitHub එකට යවන්න මේ commands ටික පිළිවෙලට run කරන්න[cite: 115]:
-
-```bash
-git add .
-git commit -m "feat: complete global exception handling, query refinement, and add professional documentation"
-git push origin main
