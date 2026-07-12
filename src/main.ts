@@ -1,14 +1,26 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ValidationPipe } from '@nestjs/common';
+import { BadRequestException, ValidationPipe } from '@nestjs/common'
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(new ValidationPipe({
-    whitelist: true, // Strips away non-whitelisted properties from request body
-    transform: true, // Automatically transforms payloads to be objects typed according to their DTO classes
-  }));
+  app.useGlobalPipes(
+  new ValidationPipe({
+    whitelist: true,
+    transform: true,
+    // Custom exception factory to format class-validator array errors into a clean string/array
+    exceptionFactory: (errors) => {
+      const messages = errors.map(
+        (error) => `${error.property} has an issue: ${Object.values(error.constraints || {}).join(', ')}`
+      );
+      return new BadRequestException(messages);
+    },
+  }),
+);
+
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   // 1. Setup Swagger Configuration Options
   const config = new DocumentBuilder()
