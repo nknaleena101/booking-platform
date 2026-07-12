@@ -52,7 +52,7 @@ Make sure you have Node.js (v20+) and PostgreSQL installed locally, or Docker ru
 1. Local Setup Without Docker
 ### Clone the repository
 - git clone <your-repository-url>
-- cd en2h-booking-platform
+- cd booking-platform
 
 ### Install dependencies
 - npm install
