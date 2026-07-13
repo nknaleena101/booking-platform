@@ -49,27 +49,27 @@ env
 Prerequisites
 Make sure you have Node.js (v20+) and PostgreSQL installed locally, or Docker running.
 
-1. Local Setup Without Docker
-### Clone the repository
+### 1. Local Setup Without Docker
+Clone the repository
 - git clone <your-repository-url>
 - cd booking-platform
 
-### Install dependencies
+Install dependencies
 - npm install
 
-### Create local PostgreSQL Database
+Create local PostgreSQL Database
 - Run your postgres instance and create a database named 'en2h_booking_db'
 
-### Configure your environment variables
+Configure your environment variables
 - cp .env.example .env
 
-### Run the application in development mode (Database tables will auto-sync)
+Run the application in development mode (Database tables will auto-sync)
 - npm run start:dev
 Once started, the API will be available at http://localhost:3000 and Swagger UI at http://localhost:3000/api.
 
 ---
 
-2. Run via Docker (Recommended)
+### 2. Run via Docker (Recommended)
 - With Docker installed, you can spin up both the NestJS server and the PostgreSQL database container seamlessly with a single command:
   docker-compose up --build
 
